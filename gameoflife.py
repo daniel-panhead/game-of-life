@@ -3,6 +3,7 @@
 import random
 import curses
 import time
+import sys
 
 def generateGrid(l, w):
 	grid = []
@@ -126,11 +127,23 @@ if __name__ == "__main__":
 	curses.cbreak()
 
 try:
-	grid = generateGrid(30, 30)
+	grid = generateGrid(int(sys.argv[1])//2, int(sys.argv[2]))
 	while True:
 		printGrid(grid)
 		grid = modifyState(grid)
 		time.sleep(0.05)
+except IndexError:
+	print("Not enough arguments. Must provide length and width")
+	exit(-1)
+except ValueError:
+	print("Invalid arguments. Must provide length and width as integers")
+	exit(-1)
+except KeyboardInterrupt:
+	exit(0)
+except Exception as e:
+	if("ERR" in str(e)): # crude check for curses error
+		print("Screen size too small. Make console larger")
+		exit(-1)
 finally:
 	curses.echo()
 	curses.nocbreak()
