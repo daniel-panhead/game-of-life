@@ -16,6 +16,7 @@ Usage:
 At command line, run gameoflife.py with two arguments: length and width.  
 Due to spacing of output, length is automatically divided by 2 so that calling with equal length and width will output a square.  
 Make sure your terminal is large enough to output the board size.
-ex.
-    python gameoflife.py 20 15
+
+ex.  
+    `python gameoflife.py 20 15`  
 initializes a 10x15 grid (half of length because of output spacing)
