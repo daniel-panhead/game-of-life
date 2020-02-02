@@ -18,5 +18,4 @@ Due to spacing of output, length is automatically divided by 2 so that calling w
 Make sure your terminal is large enough to output the board size.
 
 ex.  
-    `python gameoflife.py 20 15`  
-initializes a 10x15 grid (half of length because of output spacing)
+`python gameoflife.py 20 15` initializes a 10x15 grid (half of length because of output spacing)
