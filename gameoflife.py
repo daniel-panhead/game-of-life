@@ -2,6 +2,7 @@
 
 import random
 import curses
+import time
 
 def generateGrid(l, w):
 	grid = []
@@ -16,12 +17,16 @@ def generateGrid(l, w):
 
 def printGrid(gridArr):
 	i = 0
-	# for row in gridArr:
-	# 	# stdscr.addstr(i, 0, "  ".join("{0}".format(n) for n in row))
-	# 	stdscr.addstr(i, 0, "Hello")
-	# 	i += 1
-	stdscr.addstr(0, 0, "Hello")
-	stdscr.addstr(1, 0, "World")
+	for row in gridArr:
+		rowStr = ""
+		for cell in row:
+			if(cell == 1):
+				rowStr += "#"
+			else:
+				rowStr += " "
+		stdscr.addstr(i, 0, rowStr)
+		#stdscr.addstr(i, 0, "  ".join("{0}".format(n) for n in row))
+		i += 1
 	stdscr.refresh()
 
 def checkNeighbors(gridArr, rowArr, cellIndex, rowIndex):
@@ -100,21 +105,18 @@ def checkDeadState(alive):
 
 def modifyState(gridArr):
 	retArr = []
-	for rowIndex in range(len(gridArr)):
+	for rowIndex in range(len(gridArr)): # y
 		rowArr = []
-		for cellIndex in range(len(gridArr[rowIndex])):
+		for cellIndex in range(len(gridArr[rowIndex])): # x
 			aliveNeighbors = checkNeighbors(gridArr, gridArr[rowIndex], cellIndex, rowIndex)
-			# print("[" + str(rowIndex) + "][" + str(cellIndex) + "]" + " ")
-			# print(aliveNeighbors)
-			# print()
+			currentCell = gridArr[rowIndex][cellIndex]
 
-			cell = gridArr[rowIndex][cellIndex]
+			if(currentCell == 1):
+				currentCell = checkLiveState(aliveNeighbors)
+			elif(currentCell == 0):
+				currentCell = checkDeadState(aliveNeighbors)
 
-			if(cell == 1):
-				cell = checkLiveState(aliveNeighbors)
-			elif(cell == 0):
-				cell = checkDeadState(aliveNeighbors)
-			rowArr.append(cell)
+			rowArr.append(currentCell)
 		retArr.append(rowArr)
 	return retArr
 
@@ -124,10 +126,11 @@ if __name__ == "__main__":
 	curses.cbreak()
 
 try:
-	grid = generateGrid(4, 4)
-	printGrid(grid)
-
-	grid = modifyState(grid)
+	grid = generateGrid(30, 30)
+	while True:
+		printGrid(grid)
+		grid = modifyState(grid)
+		time.sleep(0.05)
 finally:
 	curses.echo()
 	curses.nocbreak()
